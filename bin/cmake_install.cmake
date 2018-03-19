@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/user/Desktop/CMP2012M Code
+# Install script for directory: C:/Users/user/Desktop/CMP2012M_Code
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -35,5 +35,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/user/Desktop/CMP2012M Code/bin/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/user/Desktop/CMP2012M_Code/bin/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
