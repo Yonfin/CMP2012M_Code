@@ -31,6 +31,7 @@
 
 Texture* texArray;
 
+
 int main(int argc, char *argv[]) {
 	// SDL initialise
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
@@ -43,7 +44,7 @@ int main(int argc, char *argv[]) {
 
 	// Window Creation - modified for OpenGL
 	SDL_Window *win = nullptr;
-	win = SDL_CreateWindow("OpenGL Window", 100, 100, 800, 600,
+	win = SDL_CreateWindow("Reece Goodwin, CGP2012M, GOO15576606", 100, 100, 800, 600,
 		SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 	if (win == nullptr) 
 	{
@@ -57,57 +58,50 @@ int main(int argc, char *argv[]) {
 
 	std::cout << "OpenGL version is" << glGetString(GL_VERSION) << std::endl;
 
-
 	//create objects
-	int objectCount = 5;
 	Square squares[11][9];
 	Square background;
 	Square paddle;
 
 	//create textures
-	texArray = new Texture[17];
-
-	//temp textures
-	texArray[0].load("..//content//up.png");
-	texArray[0].setBuffers();
-	texArray[1].load("..//content//circlePattern.png");
-	texArray[1].setBuffers();
-	texArray[2].load("..//content//bricks.png");
-	texArray[2].setBuffers();
+	texArray = new Texture[15];
 
 	//background textures
-	texArray[3].load("..//content//sky.png");
-	texArray[3].setBuffers();
-	texArray[4].load("..//content//xpgrass.png");
-	texArray[4].setBuffers();
+	texArray[0].load("..//content//sky.png");
+	texArray[0].setBuffers();
+	texArray[1].load("..//content//xpgrass.png");
+	texArray[1].setBuffers();
 	
 	//loading in the block textures
-	texArray[5].load("..//content//Green Block.png");
+	texArray[2].load("..//content//Green Block.png");
+	texArray[2].setBuffers();
+	texArray[3].load("..//content//Red Block.png");
+	texArray[3].setBuffers();
+	texArray[4].load("..//content//Purple Block.png");
+	texArray[4].setBuffers();
+	texArray[5].load("..//content//Yellow Block.png");
 	texArray[5].setBuffers();
-	texArray[6].load("..//content//Red Block.png");
+	texArray[6].load("..//content//Blue Block.png");
 	texArray[6].setBuffers();
-	texArray[7].load("..//content//Purple Block.png");
+	texArray[7].load("..//content//Misty Blue Block.png");
 	texArray[7].setBuffers();
-	texArray[8].load("..//content//Yellow Block.png");
+	texArray[8].load("..//content//Orange Block.png");
 	texArray[8].setBuffers();
-	texArray[9].load("..//content//Blue Block.png");
+	texArray[9].load("..//content//Grey Block.png");
 	texArray[9].setBuffers();
-	texArray[10].load("..//content//Misty Blue Block.png");
+	texArray[10].load("..//content//Dark Green Block.png");
 	texArray[10].setBuffers();
-	texArray[11].load("..//content//Orange Block.png");
+	texArray[11].load("..//content//Black Block.png");
 	texArray[11].setBuffers();
-	texArray[12].load("..//content//Grey Block.png");
+	texArray[12].load("..//content//Cyan Block.png");
 	texArray[12].setBuffers();
-	texArray[13].load("..//content//Dark Green Block.png");
-	texArray[13].setBuffers();
-	texArray[14].load("..//content//Black Block.png");
-	texArray[14].setBuffers();
-	texArray[15].load("..//content//Cyan Block.png");
-	texArray[15].setBuffers();
 
 	//player paddle
-	texArray[16].load("..//content//Paddle.png");
-	texArray[16].setBuffers();
+	texArray[13].load("..//content//Paddle.png");
+	texArray[13].setBuffers();
+	//ball
+	texArray[14].load("..//content//Ball.png");
+	texArray[14].setBuffers();
 
 	//create shaders
 	Shader vSh("..//src//shader_projection.vert");
@@ -202,6 +196,10 @@ int main(int argc, char *argv[]) {
 
 	while (windowOpen)
 	{
+		//updates the window size, allows for resizing and maintains aspect ratio
+		int w = 600;
+		int h = 800;
+		SDL_GetWindowSize(win, &w, &h);
 
 		//background colour
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -222,14 +220,14 @@ int main(int argc, char *argv[]) {
 		glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
 		projectionLocation = glGetUniformLocation(shaderProgram, "uProjection");
 		glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
-		glBindTexture(GL_TEXTURE_2D, texArray[3].texture);
+		glBindTexture(GL_TEXTURE_2D, texArray[0].texture);
 		background.render();
 
 		//set paddle image
 		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(paddleTranslate*mScale));
 		glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
 		glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
-		glBindTexture(GL_TEXTURE_2D, texArray[16].texture);
+		glBindTexture(GL_TEXTURE_2D, texArray[13].texture);
 		paddle.render();
 
 		//reset translation matrix
@@ -243,7 +241,7 @@ int main(int argc, char *argv[]) {
 		{
 			//loads in the texture assigned to that row
 			//row finishes and moves onto next texture
-			glBindTexture(GL_TEXTURE_2D, texArray[x + 5].texture);
+			glBindTexture(GL_TEXTURE_2D, texArray[x + 2].texture);
 
 			for (int y = 0; y < 9; y++)
 			{
@@ -256,8 +254,6 @@ int main(int argc, char *argv[]) {
 
 				//gap inbetween blocks on x axis
 				mTranslate = glm::translate(mTranslate, glm::vec3(0.2f, 0.0f, 0.0f));
-				//bind the texture we want to use				
-				//glBindTexture(GL_TEXTURE_2D, texArray[y + 5].texture);
 				//Draw the grid - call its render method
 				squares[x][y].render();
 			}
@@ -272,10 +268,13 @@ int main(int argc, char *argv[]) {
 
 		SDL_GL_SwapWindow(win);
 
-
 		//Process input
 		if (SDL_PollEvent(&event))
 		{
+			if (event.type == SDL_WINDOWEVENT)
+			{
+				glViewport(0, 0, w, h);
+			}
 			if (event.type == SDL_QUIT)
 			{
 				windowOpen = false;
@@ -284,7 +283,8 @@ int main(int argc, char *argv[]) {
 			{
 				switch (event.key.keysym.sym)
 				{
-				case SDLK_LEFT:
+					//player character movement
+					case SDLK_LEFT:
 					paddleTranslate = glm::translate(paddleTranslate, glm::vec3(-0.05f, 0.0f, 0.0f));
 					break;
 				case SDLK_RIGHT:
@@ -296,11 +296,15 @@ int main(int argc, char *argv[]) {
 				case SDLK_DOWN:
 					paddleTranslate = glm::translate(paddleTranslate, glm::vec3(0.0f, -0.05f, 0.0f));
 					break;
+					//camera movement
 				case SDLK_q:
 					viewMatrix = glm::translate(viewMatrix, glm::vec3(-0.01f, 0.0f, 0.0f));
 					break;
 				case SDLK_e:
 					viewMatrix = glm::translate(viewMatrix, glm::vec3(0.01f, 0.0f, 0.0f));
+					break;
+					//fullscreen mode
+				case SDLK_f:
 					break;
 					//closes the program via key
 				case SDLK_ESCAPE:
@@ -313,7 +317,6 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-
 	// Clean up
 	SDL_Log("Finished. Cleaning up and closing down\n");
 
@@ -324,6 +327,5 @@ int main(int argc, char *argv[]) {
 	SDL_Quit();
 	return 0;
 }
-
 
 #endif
