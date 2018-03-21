@@ -13,8 +13,6 @@
 #define GLEW_H
 //#include <GL/glew.h>
 
-
-
 // SDL - Simple DirectMedia Layer - https://www.libsdl.org/
 #include "SDL.h"
 #include "SDL_image.h"
@@ -56,15 +54,18 @@ int main(int argc, char *argv[]) {
 	// Create an OpenGL context associated with the window.
 	SDL_GLContext glcontext = SDL_GL_CreateContext(win);
 
+
 	std::cout << "OpenGL version is" << glGetString(GL_VERSION) << std::endl;
 
 	//create objects
-	Square squares[11][9];
+	Square bricks[11][9];
 	Square background;
 	Square paddle;
+	Circle ball(0.2f, 0.2f);
+	Square lives[3];
 
 	//create textures
-	texArray = new Texture[15];
+	texArray = new Texture[16];
 
 	//background textures
 	texArray[0].load("..//content//sky.png");
@@ -102,6 +103,9 @@ int main(int argc, char *argv[]) {
 	//ball
 	texArray[14].load("..//content//Ball.png");
 	texArray[14].setBuffers();
+	//lives
+	texArray[15].load("..//content//Life.png");
+	texArray[15].setBuffers();
 
 	//create shaders
 	Shader vSh("..//src//shader_projection.vert");
@@ -145,15 +149,26 @@ int main(int argc, char *argv[]) {
 
 	//OpenGL buffers
 	//set buffers for shapes
+	
+	//for the grid of square blocks
 	for (int i = 0; i < 11; i++)
 	{
 		for (int j = 0; j < 9; j++)
 		{
-			squares[i][j].setBuffers();
+			bricks[i][j].setBuffers();
 		}
 	}
+
+	//for the lives in a row
+	for (int i = 0; i < 3; i++)
+	{
+		lives[i].setBuffers();
+	}
+
+
 	background.setBuffers();
 	paddle.setBuffers();
+	ball.setBuffers();
 
 	//tranform matrices 
 	glm::mat4 modelMatrix;
@@ -167,6 +182,9 @@ int main(int argc, char *argv[]) {
 	glm::mat4 paddleTranslate;
 	glm::vec3 scaleFactor;
 	glm::vec3 b_scaleFactor;
+	glm::mat4 ballTranslate;
+	glm::mat4 ballScale;
+	glm::mat4 lifeScale;
 
 	//once only scale to square
 	scaleFactor = { 1.0f, 0.4f, 1.0f };
@@ -180,6 +198,13 @@ int main(int argc, char *argv[]) {
 	//set initial position of paddle
 	paddleTranslate = glm::translate(paddleTranslate, glm::vec3(0.0f, -0.95f, 0.0f));
 
+	//set the initial position of the ball
+	ballTranslate = glm::translate(ballTranslate, glm::vec3(-0.036f, -0.9f, 0.0f));
+	ballScale = glm::scale(ballScale, glm::vec3(0.2f, 0.2f, 0.2f));
+
+	//setting up the lives
+
+
 	//set view matrix to identity
 	//matrix equivalent of '1'
 	viewMatrix = glm::mat4(1.0f);
@@ -187,18 +212,28 @@ int main(int argc, char *argv[]) {
 	//orthographic projection
 	//left, right, bottom, top, near clip plane, far clip plane
 	//set width and height values
-	projectionMatrix = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 100.0f);
-
+	float aspectRatio = 1.3;	//maintains aspect ratio
+	projectionMatrix = glm::ortho(-1.0f*aspectRatio, 1.0f*aspectRatio, -1.0f, 1.0f, -1.0f, 100.0f);
 
 	//A game loop, rendering, then handling input
 	SDL_Event event;
 	bool windowOpen = true;
+	bool ballMoving = false;
+	bool ballLeft, ballDown = false;
+	Uint32 flags;
+	float ballX, ballY;
+	float ballPosX, ballPosY;
 
+	/////////////////
+	//THE GAME LOOP//
+	/////////////////
 	while (windowOpen)
 	{
+		//ballTranslate = glm::translate(ballTranslate, glm::vec3(0.0f, -0.0005f, 0.0f));
+
 		//updates the window size, allows for resizing and maintains aspect ratio
-		int w = 600;
-		int h = 800;
+		int w;
+		int h;
 		SDL_GetWindowSize(win, &w, &h);
 
 		//background colour
@@ -212,6 +247,7 @@ int main(int argc, char *argv[]) {
 									   // Draw the scene
 									   //need to 'use' the shaders before updating uniforms
 		glUseProgram(shaderProgram);
+
 
 		//set background image
 		modelLocation = glGetUniformLocation(shaderProgram, "uModel");
@@ -229,6 +265,13 @@ int main(int argc, char *argv[]) {
 		glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 		glBindTexture(GL_TEXTURE_2D, texArray[13].texture);
 		paddle.render();
+
+		//set ball image
+		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(ballTranslate * ballScale));
+		glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+		glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+		//glBindTexture(GL_TEXTURE_2D, texArray[14].texture);
+		ball.render();
 
 		//reset translation matrix
 		mTranslate = glm::mat4(1.0f);
@@ -255,14 +298,30 @@ int main(int argc, char *argv[]) {
 				//gap inbetween blocks on x axis
 				mTranslate = glm::translate(mTranslate, glm::vec3(0.2f, 0.0f, 0.0f));
 				//Draw the grid - call its render method
-				squares[x][y].render();
+				bricks[x][y].render();
 			}
 
 			mTranslate = glm::mat4(1.0f);
 			//set start of next line of blocks
-			mTranslate = glm::translate(mTranslate, glm::vec3(-0.8f, 0.9f - ((x + 1) / 12.0f), 0.0f));
+			mTranslate = glm::translate(mTranslate, glm::vec3(-0.8f, 0.9f - ((x + 1) / 11.0f), 0.0f));
 
 		}
+
+		//position and draw the lives
+		for (int x = 0; x < 3; x++)
+		{
+			modelMatrix = mTranslate * mRotate * mScale;
+
+			glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+			glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+			glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+			glBindTexture(GL_TEXTURE_2D, texArray[15].texture);
+
+			mTranslate = glm::translate(mTranslate, glm::vec3(0.0f, -0.5f, 0.0f));
+			lives[x].render();
+
+		}
+
 		//reset the translation matrix using the 'identity' matrix
 		mTranslate = glm::mat4(1.0f);
 
@@ -286,26 +345,47 @@ int main(int argc, char *argv[]) {
 					//player character movement
 					case SDLK_LEFT:
 					paddleTranslate = glm::translate(paddleTranslate, glm::vec3(-0.05f, 0.0f, 0.0f));
+
+					if (ballMoving == false) //stays with the paddle until shot
+					{
+						ballTranslate = glm::translate(ballTranslate, glm::vec3(-0.05f, 0.0f, 0.0f));
+					}
 					break;
 				case SDLK_RIGHT:
 					paddleTranslate = glm::translate(paddleTranslate, glm::vec3(0.05f, 0.0f, 0.0f));
+					if (ballMoving == false)
+					{ 
+						ballTranslate = glm::translate(ballTranslate, glm::vec3(0.05f, 0.0f, 0.0f));
+					}
 					break;
-				case SDLK_UP:
-					paddleTranslate = glm::translate(paddleTranslate, glm::vec3(0.0f, 0.05f, 0.0f));
+
+				case SDLK_SPACE:
+					if (ballMoving == false)
+						ballMoving = true; //shoots ball
 					break;
-				case SDLK_DOWN:
-					paddleTranslate = glm::translate(paddleTranslate, glm::vec3(0.0f, -0.05f, 0.0f));
-					break;
+
 					//camera movement
 				case SDLK_q:
 					viewMatrix = glm::translate(viewMatrix, glm::vec3(-0.01f, 0.0f, 0.0f));
+
 					break;
 				case SDLK_e:
 					viewMatrix = glm::translate(viewMatrix, glm::vec3(0.01f, 0.0f, 0.0f));
 					break;
+
 					//fullscreen mode
 				case SDLK_f:
+					flags = SDL_GetWindowFlags(win);
+					if (flags & SDL_WINDOW_FULLSCREEN)
+					{
+						SDL_SetWindowFullscreen(win, 0);
+					}
+					else
+					{
+						SDL_SetWindowFullscreen(win, SDL_WINDOW_FULLSCREEN_DESKTOP);
+					}
 					break;
+
 					//closes the program via key
 				case SDLK_ESCAPE:
 					windowOpen = false;
@@ -314,6 +394,40 @@ int main(int argc, char *argv[]) {
 					break;
 				}
 			}
+		}		
+		//ball is moving right
+		if (ballTranslate[3].x >= 0.92f)
+		{
+			ballLeft = false;
+		}
+		//ball is moving left
+		if (ballTranslate[3].x <= -1.0f)
+		{
+			ballLeft = true;
+		}
+		//ball is moving up
+		if (ballTranslate[3].y >= 0.92f)
+		{
+			ballDown = true;
+		}
+		//ball is moving down
+		if (ballTranslate[3].y <= -1.0f)
+		{
+			SDL_Log("YOU DIED");
+			ballMoving = false;
+		}
+
+		if (ballMoving == true)
+		{
+			ballX = 0.008f;
+			ballY = 0.008f;
+
+			if (!ballLeft)
+				ballX = -ballX;
+			if (ballDown)
+				ballY = -ballY;
+
+			ballTranslate = glm::translate(ballTranslate, glm::vec3(ballX, ballY, 0.0f));
 		}
 	}
 

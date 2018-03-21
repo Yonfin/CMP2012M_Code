@@ -10,6 +10,4 @@ void main()
 	//vertColour = vec4(Colour, 1.0f);
 	//vertColour = texture(aTex, textureCoordinate);
 	gl_FragColor = texture(aTex, textureCoordinate);
-	
-	
 }
