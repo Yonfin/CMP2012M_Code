@@ -369,15 +369,14 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\Boundary.h" />
-    <ClInclude Include="..\src\Globals.h" />
+    <ClInclude Include="..\src\TextSquare.h" />
+    <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Boundary.h" />
     <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Circle.h" />
-    <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Rectangle.h" />
+    <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Globals.h" />
     <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\ShaderClass.h" />
     <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Square.h" />
     <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\TextureClass.h" />
-    <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Triangle.h" />
-    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="C:\Users\user\Desktop\CMP2012M_Code\src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="C:\Users\user\Desktop\CMP2012M_Code\bin\ZERO_CHECK.vcxproj">

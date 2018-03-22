@@ -10,9 +10,9 @@ public:
 	//define vertices for the square
 	GLfloat sq_vertices[32] = {
 		//vertices				colours				texture coordinates
-		0.1f, 0.1f, 0.0f,		0.0f, 0.5f, 0.0f,   1.0f, 1.0f,
-		0.1f, -0.1f, 0.0f,		0.5f, 0.0f, 0.0f,   1.0f, 0.0f,
-		-0.1f,  -0.1f, 0.0f,	0.0f, 0.0f, 0.5f,   0.0f, 0.0f,
+		 0.1f, 0.1f, 0.0f,		0.0f, 0.5f, 0.0f,   1.0f, 1.0f,
+		 0.1f, -0.1f, 0.0f,		0.5f, 0.0f, 0.0f,   1.0f, 0.0f,
+		-0.1f, -0.1f, 0.0f,		0.0f, 0.0f, 0.5f,   0.0f, 0.0f,
 		-0.1f, 0.1f, 0.0f,		0.5f, 0.0f, 0.5f,   0.0f, 1.0f
 	};
 	//define indices for the square

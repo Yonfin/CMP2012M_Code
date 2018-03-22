@@ -1,12 +1,11 @@
 #include <iostream>
-#include "Triangle.h"
 #include "Circle.h"
 #include "Square.h"
-#include "Rectangle.h"
 #include "ShaderClass.h"
 #include "TextureClass.h"
 #include "Boundary.h"
 #include "Globals.h"
+#include "TextSquare.h"
 #include <random>
 
 // // GLEW - OpenGL Extension Wrangler - http://glew.sourceforge.net/
@@ -173,7 +172,6 @@ int main(int argc, char *argv[]) {
 		lives[i].setBuffers();
 	}
 
-
 	background.setBuffers();
 	paddle.setBuffers();
 	ball.setBuffers();
@@ -193,7 +191,6 @@ int main(int argc, char *argv[]) {
 	glm::mat4 ballTranslate;
 	//Rotate
 	glm::mat4 mRotate;
-	glm::mat4 boundaryRotate;
 	//Scale
 	glm::mat4 backgroundScale;
 	glm::vec3 scaleFactor;
@@ -202,21 +199,23 @@ int main(int argc, char *argv[]) {
 	glm::mat4 lifeScale;
 	glm::mat4 mScale;
 	glm::mat4 boundaryScale;
+	glm::mat4 paddleScale;
 
 	//once only scale to square
 	scaleFactor = { 1.0f, 0.4f, 1.0f };
 	mScale = glm::scale(mScale, glm::vec3(scaleFactor));
 
 	//once only scale to background
-	b_scaleFactor = { 10.0f, 10.0f, 1.0f };
+	b_scaleFactor = { 20.0f, 10.0f, 1.0f };
 	backgroundScale = glm::scale(backgroundScale, glm::vec3(b_scaleFactor));
 	backgroundTranslate = glm::translate(backgroundTranslate, glm::vec3(0.0f, 0.0f, 0.0f));
 
-	//set initial position of paddle
+	//set initial position of paddle and scaling to fit
 	paddleTranslate = glm::translate(paddleTranslate, glm::vec3(0.0f, -0.95f, 0.0f));
+	paddleScale = glm::scale(paddleScale, glm::vec3(1.5f, 0.2f, 0.0f));
 
 	//set the initial position of the ball
-	ballTranslate = glm::translate(ballTranslate, glm::vec3(-0.0f, -0.88f, 0.0f));
+	ballTranslate = glm::translate(ballTranslate, glm::vec3(0.01f, -0.9f, 0.0f));
 	ballScale = glm::scale(ballScale, glm::vec3(0.3f, 0.3f, 0.0f));
 
 	//setting up the lives
@@ -250,13 +249,11 @@ int main(int argc, char *argv[]) {
 	bool ballMoving = false;
 	bool ballLeft, ballDown = false;
 
-	/////////////////
-	//THE GAME LOOP//
-	/////////////////
+	///////////////////
+	///THE GAME LOOP///
+	///////////////////
 	while (windowOpen)
 	{
-		//ballTranslate = glm::translate(ballTranslate, glm::vec3(0.0f, -0.0005f, 0.0f));
-
 		//updates the window size, allows for resizing and maintains aspect ratio
 		int w;
 		int h;
@@ -274,7 +271,6 @@ int main(int argc, char *argv[]) {
 									   //need to 'use' the shaders before updating uniforms
 		glUseProgram(shaderProgram);
 
-
 		//set background image
 		modelLocation = glGetUniformLocation(shaderProgram, "uModel");
 		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(backgroundTranslate*backgroundScale));
@@ -286,7 +282,7 @@ int main(int argc, char *argv[]) {
 		background.render();
 
 		//set paddle image
-		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(paddleTranslate*mScale));
+		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(paddleTranslate*paddleScale));
 		glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
 		glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 		glBindTexture(GL_TEXTURE_2D, texArray[13].texture);
@@ -316,12 +312,11 @@ int main(int argc, char *argv[]) {
 		glBindTexture(GL_TEXTURE_2D, texArray[16].texture);
 		boundaryRight.render();
 
-
 		//reset translation matrix
 		mTranslate = glm::mat4(1.0f);
 
 		//translate to the top left of the squares
-		mTranslate = glm::translate(mTranslate, glm::vec3(-0.8f, 0.8f, 0.0f));
+		mTranslate = glm::translate(mTranslate, glm::vec3(-0.77f, 0.8f, 0.0f));
 
 		//position and draw the squares
 		for (int x = 0; x < 11; x++)
@@ -347,15 +342,14 @@ int main(int argc, char *argv[]) {
 
 			mTranslate = glm::mat4(1.0f);
 			//set start of next line of blocks
-			mTranslate = glm::translate(mTranslate, glm::vec3(-0.8f, 0.8f - ((x + 1) / 11.0f), 0.0f));
-
+			mTranslate = glm::translate(mTranslate, glm::vec3(-0.77f, 0.8f - ((x + 1) / 11.0f), 0.0f));
 		}
 
 		//reset
 		mTranslate = glm::mat4(1.0f);
 
 		//translate the first life
-		mTranslate = glm::translate(mTranslate, glm::vec3(0.7f, 0.9f, 0.0f));
+		mTranslate = glm::translate(mTranslate, glm::vec3(0.75f, 0.9f, 0.0f));
 
 		//position and draw the lives
 		for (int x = 0; x < 3; x++)
@@ -395,14 +389,14 @@ int main(int argc, char *argv[]) {
 					//player character movement
 					case SDLK_LEFT:
 
-					if (paddleTranslate[3].x <= -0.9f)
+					if (paddleTranslate[3].x <= -0.8f)
 					{
 						paddleTranslate = glm::translate(paddleTranslate, glm::vec3(0.0f, 0.0f, 0.0f));
 					}
 					else
 					{
 						paddleTranslate = glm::translate(paddleTranslate, glm::vec3(-0.05f, 0.0f, 0.0f));
-					
+						backgroundTranslate = glm::translate(backgroundTranslate, glm::vec3(0.01f, 0.0f, 0.0f));
 						if (ballMoving == false) //stays with the paddle until shot
 						{
 							ballTranslate = glm::translate(ballTranslate, glm::vec3(-0.05f, 0.0f, 0.0f));
@@ -412,14 +406,14 @@ int main(int argc, char *argv[]) {
 					break;
 					case SDLK_RIGHT:
 
-					if (paddleTranslate[3].x >= 0.9f)
+					if (paddleTranslate[3].x >= 0.85f)
 					{
 						paddleTranslate = glm::translate(paddleTranslate, glm::vec3(0.0f, 0.0f, 0.0f));
 					}
 					else
 					{
 						paddleTranslate = glm::translate(paddleTranslate, glm::vec3(0.05f, 0.0f, 0.0f));
-
+						backgroundTranslate = glm::translate(backgroundTranslate, glm::vec3(-0.01f, 0.0f, 0.0f));
 						if (ballMoving == false)
 						{
 							ballTranslate = glm::translate(ballTranslate, glm::vec3(0.05f, 0.0f, 0.0f));
@@ -502,6 +496,8 @@ int main(int argc, char *argv[]) {
 			ballTranslate = glm::translate(ballTranslate, glm::vec3(ballX, ballY, 0.0f));
 		}
 
+		//if (checkCollision(ballTranslate[3].x, ballTranslate[3].y))
+
 		if (livesLeft == 0)
 		{
 			SDL_Log("Game Over!");
@@ -520,5 +516,19 @@ int main(int argc, char *argv[]) {
 	SDL_Quit();
 	return 0;
 }
+
+///////////////
+///Collision///
+///////////////
+bool checkCollision(float aX, float aY, float aW, float aH, float bX, float bY, float bW, float bH)
+{
+	if (aY + aH < bY) return false;
+	else if (aY > bY + bH) return false;
+	else if (aX + aW < bX) return false;
+	else if (aX > bX + bW) return false;
+
+	return true;
+}
+
 
 #endif
