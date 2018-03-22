@@ -28,8 +28,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-Texture* texArray;
 
+bool checkCollision(float aX, float aY, float aW, float aH, float bX, float bY, float bW, float bH);
+Texture* texArray;
 
 int main(int argc, char *argv[]) {
 	// SDL initialise
@@ -61,6 +62,7 @@ int main(int argc, char *argv[]) {
 	//create objects
 	Square bricks[11][9];
 	Square background;
+	Square midground;
 	Square paddle;
 	Square ball;
 	Square lives[3];
@@ -173,6 +175,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	background.setBuffers();
+	midground.setBuffers();
 	paddle.setBuffers();
 	ball.setBuffers();
 	boundaryLeft.setBuffers();
@@ -187,12 +190,14 @@ int main(int argc, char *argv[]) {
 	//Translate
 	glm::mat4 mTranslate;
 	glm::mat4 backgroundTranslate;
+	glm::mat4 midgroundTranslate;
 	glm::mat4 paddleTranslate;
 	glm::mat4 ballTranslate;
 	//Rotate
 	glm::mat4 mRotate;
 	//Scale
 	glm::mat4 backgroundScale;
+	glm::mat4 midgroundScale;
 	glm::vec3 scaleFactor;
 	glm::vec3 b_scaleFactor;
 	glm::mat4 ballScale;
@@ -209,6 +214,10 @@ int main(int argc, char *argv[]) {
 	b_scaleFactor = { 20.0f, 10.0f, 1.0f };
 	backgroundScale = glm::scale(backgroundScale, glm::vec3(b_scaleFactor));
 	backgroundTranslate = glm::translate(backgroundTranslate, glm::vec3(0.0f, 0.0f, 0.0f));
+	
+	//scale midground
+	midgroundScale = glm::scale(midgroundScale, glm::vec3(b_scaleFactor));
+	midgroundTranslate = glm::translate(midgroundTranslate, glm::vec3(0.0f, 0.0f, 0.0f));
 
 	//set initial position of paddle and scaling to fit
 	paddleTranslate = glm::translate(paddleTranslate, glm::vec3(0.0f, -0.95f, 0.0f));
@@ -280,6 +289,17 @@ int main(int argc, char *argv[]) {
 		glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 		glBindTexture(GL_TEXTURE_2D, texArray[0].texture);
 		background.render();
+
+		//set midground image
+		modelLocation = glGetUniformLocation(shaderProgram, "uModel");
+		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(midgroundTranslate*midgroundScale));
+		viewLocation = glGetUniformLocation(shaderProgram, "uView");
+		glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+		projectionLocation = glGetUniformLocation(shaderProgram, "uProjection");
+		glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+		glBindTexture(GL_TEXTURE_2D, texArray[1].texture);
+		midground.render();
+
 
 		//set paddle image
 		glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(paddleTranslate*paddleScale));
@@ -397,6 +417,7 @@ int main(int argc, char *argv[]) {
 					{
 						paddleTranslate = glm::translate(paddleTranslate, glm::vec3(-0.05f, 0.0f, 0.0f));
 						backgroundTranslate = glm::translate(backgroundTranslate, glm::vec3(0.01f, 0.0f, 0.0f));
+						midgroundTranslate = glm::translate(midgroundTranslate, glm::vec3(0.005f, 0.0f, 0.0f));
 						if (ballMoving == false) //stays with the paddle until shot
 						{
 							ballTranslate = glm::translate(ballTranslate, glm::vec3(-0.05f, 0.0f, 0.0f));
@@ -414,6 +435,7 @@ int main(int argc, char *argv[]) {
 					{
 						paddleTranslate = glm::translate(paddleTranslate, glm::vec3(0.05f, 0.0f, 0.0f));
 						backgroundTranslate = glm::translate(backgroundTranslate, glm::vec3(-0.01f, 0.0f, 0.0f));
+						midgroundTranslate = glm::translate(midgroundTranslate, glm::vec3(-0.005f, 0.0f, 0.0f));
 						if (ballMoving == false)
 						{
 							ballTranslate = glm::translate(ballTranslate, glm::vec3(0.05f, 0.0f, 0.0f));
@@ -422,7 +444,7 @@ int main(int argc, char *argv[]) {
 					
 					break;
 
-				case SDLK_SPACE:
+				case SDLK_UP:
 					if (ballMoving == false)
 						ballMoving = true; //shoots ball
 					break;
@@ -496,7 +518,10 @@ int main(int argc, char *argv[]) {
 			ballTranslate = glm::translate(ballTranslate, glm::vec3(ballX, ballY, 0.0f));
 		}
 
-		//if (checkCollision(ballTranslate[3].x, ballTranslate[3].y))
+		if (checkCollision(ballTranslate[3].x, ballTranslate[3].y, ballTranslate[3].x + 0.5f, ballTranslate[3].y + 0.5f, paddleTranslate[3].x, paddleTranslate[3].y, paddleTranslate[3].x + 0.5f, paddleTranslate[3].y + 0.5f))
+		{
+			SDL_Log("Collision Detected!!! WE HAVE LIFE");
+		}
 
 		if (livesLeft == 0)
 		{

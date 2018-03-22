@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -111,8 +111,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <PreBuildEvent>
-      <Message>
-      </Message>
+      <Message></Message>
       <Command>setlocal
 call pre_build_Script.bat
 if %errorlevel% neq 0 goto :cmEnd
@@ -132,8 +131,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ImportLibrary>C:/Users/user/Desktop/CMP2012M_Code/bin/lib/lab1.lib</ImportLibrary>
       <ProgramDataBaseFile>C:/Users/user/Desktop/CMP2012M_Code/bin/bin/lab1.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
-      <Version>
-      </Version>
+      <Version></Version>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -153,8 +151,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;GLEW_STATIC;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
-      <DebugInformationFormat>
-      </DebugInformationFormat>
+      <DebugInformationFormat></DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;GLEW_STATIC;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -169,8 +166,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <PreBuildEvent>
-      <Message>
-      </Message>
+      <Message></Message>
       <Command>setlocal
 call pre_build_Script.bat
 if %errorlevel% neq 0 goto :cmEnd
@@ -190,8 +186,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ImportLibrary>C:/Users/user/Desktop/CMP2012M_Code/bin/lib/lab1.lib</ImportLibrary>
       <ProgramDataBaseFile>C:/Users/user/Desktop/CMP2012M_Code/bin/bin/lab1.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
-      <Version>
-      </Version>
+      <Version></Version>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -211,8 +206,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;GLEW_STATIC;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
-      <DebugInformationFormat>
-      </DebugInformationFormat>
+      <DebugInformationFormat></DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;GLEW_STATIC;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -227,8 +221,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <PreBuildEvent>
-      <Message>
-      </Message>
+      <Message></Message>
       <Command>setlocal
 call pre_build_Script.bat
 if %errorlevel% neq 0 goto :cmEnd
@@ -248,8 +241,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ImportLibrary>C:/Users/user/Desktop/CMP2012M_Code/bin/lib/MinSizeRel/lab1.lib</ImportLibrary>
       <ProgramDataBaseFile>C:/Users/user/Desktop/CMP2012M_Code/bin/bin/MinSizeRel/lab1.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
-      <Version>
-      </Version>
+      <Version></Version>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -284,8 +276,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <PreBuildEvent>
-      <Message>
-      </Message>
+      <Message></Message>
       <Command>setlocal
 call pre_build_Script.bat
 if %errorlevel% neq 0 goto :cmEnd
@@ -305,8 +296,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ImportLibrary>C:/Users/user/Desktop/CMP2012M_Code/bin/lib/RelWithDebInfo/lab1.lib</ImportLibrary>
       <ProgramDataBaseFile>C:/Users/user/Desktop/CMP2012M_Code/bin/bin/RelWithDebInfo/lab1.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
-      <Version>
-      </Version>
+      <Version></Version>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -369,14 +359,14 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\TextSquare.h" />
     <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Boundary.h" />
     <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Circle.h" />
     <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Globals.h" />
     <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\ShaderClass.h" />
     <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Square.h" />
+    <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\TextSquare.h" />
     <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\TextureClass.h" />
-    <ClCompile Include="C:\Users\user\Desktop\CMP2012M_Code\src\main.cpp" />
+    <ClCompile Include="C:\Users\user\Desktop\CMP2012M_Code\src\main.cpp"  />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="C:\Users\user\Desktop\CMP2012M_Code\bin\ZERO_CHECK.vcxproj">

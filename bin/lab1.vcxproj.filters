@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="C:\Users\user\Desktop\CMP2012M_Code\src\main.cpp">
@@ -21,10 +21,10 @@
     <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Square.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\TextureClass.h">
+    <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\TextSquare.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\TextSquare.h">
+    <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\TextureClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
