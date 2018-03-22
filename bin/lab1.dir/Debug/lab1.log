@@ -1,10 +1,8 @@
-﻿  16 File(s) copied
-  16 File(s) copied
-  multiple_object_ortho.cpp
+﻿  17 File(s) copied
+  17 File(s) copied
+  main.cpp
 c:\users\user\desktop\cmp2012m_code\src\Circle.h(77): warning C4305: '+=': truncation from 'double' to 'GLfloat'
-C:\Users\user\Desktop\CMP2012M_Code\src\multiple_object_ortho.cpp(215): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\user\Desktop\CMP2012M_Code\src\multiple_object_ortho.cpp(225): warning C4101: 'ballPosY': unreferenced local variable
-C:\Users\user\Desktop\CMP2012M_Code\src\multiple_object_ortho.cpp(139): warning C4101: 'transformLocation': unreferenced local variable
-C:\Users\user\Desktop\CMP2012M_Code\src\multiple_object_ortho.cpp(225): warning C4101: 'ballPosX': unreferenced local variable
+c:\users\user\desktop\cmp2012m_code\src\Globals.h(2): warning C4305: 'initializing': truncation from 'double' to 'float'
+..\src\main.cpp(147): warning C4101: 'transformLocation': unreferenced local variable
   lab1.vcxproj -> C:\Users\user\Desktop\CMP2012M_Code\bin\bin\lab1.exe
   lab1.vcxproj -> C:/Users/user/Desktop/CMP2012M_Code/bin/bin/lab1.pdb (Full PDB)

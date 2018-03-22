@@ -16,7 +16,8 @@ public:
 		-0.1f, 0.1f, 0.0f,		0.5f, 0.0f, 0.5f,   0.0f, 1.0f
 	};
 	//define indices for the square
-	GLuint indices[6] = {
+	GLuint indices[6] = 
+	{
 		0, 1, 3,
 		1, 2, 3
 	};

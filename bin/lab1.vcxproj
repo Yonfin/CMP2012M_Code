@@ -369,13 +369,15 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\Boundary.h" />
+    <ClInclude Include="..\src\Globals.h" />
     <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Circle.h" />
     <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Rectangle.h" />
     <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\ShaderClass.h" />
     <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Square.h" />
     <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\TextureClass.h" />
     <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Triangle.h" />
-    <ClCompile Include="C:\Users\user\Desktop\CMP2012M_Code\src\multiple_object_ortho.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="C:\Users\user\Desktop\CMP2012M_Code\bin\ZERO_CHECK.vcxproj">
