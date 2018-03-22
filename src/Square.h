@@ -28,6 +28,10 @@ public:
 	GLuint VAO;
 	//set up index buffer object
 	GLuint EBO;
+	//brick is hit
+	bool isHit = false;
+	//brick xy ID
+	int brickID = 0;
 
 	void setBuffers()
 	{

@@ -193,6 +193,7 @@ int main(int argc, char *argv[]) {
 	glm::mat4 midgroundTranslate;
 	glm::mat4 paddleTranslate;
 	glm::mat4 ballTranslate;
+	glm::mat4 brickTranslate;
 	//Rotate
 	glm::mat4 mRotate;
 	//Scale
@@ -257,6 +258,8 @@ int main(int argc, char *argv[]) {
 	bool windowOpen = true;
 	bool ballMoving = false;
 	bool ballLeft, ballDown = false;
+	bool isHidden = false;
+
 
 	///////////////////
 	///THE GAME LOOP///
@@ -334,9 +337,9 @@ int main(int argc, char *argv[]) {
 
 		//reset translation matrix
 		mTranslate = glm::mat4(1.0f);
-
+		brickTranslate = glm::mat4(1.0f);
 		//translate to the top left of the squares
-		mTranslate = glm::translate(mTranslate, glm::vec3(-0.77f, 0.8f, 0.0f));
+		brickTranslate = glm::translate(brickTranslate, glm::vec3(-0.77f, 0.8f, 0.0f));
 
 		//position and draw the squares
 		for (int x = 0; x < 11; x++)
@@ -347,7 +350,7 @@ int main(int argc, char *argv[]) {
 
 			for (int y = 0; y < 9; y++)
 			{
-				modelMatrix = mTranslate * mRotate * mScale;
+				modelMatrix = brickTranslate * mRotate * mScale;
 				//transform uniforms
 				//set current value of transform matrix in shader
 				glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
@@ -355,14 +358,32 @@ int main(int argc, char *argv[]) {
 				glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 
 				//gap inbetween blocks on x axis
-				mTranslate = glm::translate(mTranslate, glm::vec3(0.2f, 0.0f, 0.0f));
+				brickTranslate = glm::translate(brickTranslate, glm::vec3(0.2f, 0.0f, 0.0f));
 				//Draw the grid - call its render method
-				bricks[x][y].render();
+
+			/*	if (checkCollision(ballTranslate[3].x, ballTranslate[3].y, ballTranslate[3].x + 0.2f, ballTranslate[3].y + 0.2f, brickTranslate[3].x, brickTranslate[3].y, brickTranslate[3].x + 0.2f, brickTranslate[3].y + 0.2f))
+				{
+					bricks[x][y].isHit == true;
+					SDL_Log("Collision Detected!!!");
+				}*/
+				if (bricks[x][y].isHit == false)
+				{
+					bricks[x][y].render();
+				}
+				else
+				{
+					
+					//[x][y].brickID
+				}
+				bricks[x][y].brickID = (x * 9) + y;
+
+				//SDL_Log("brickTranslate[3] = %f, %f, %f, %f", brickTranslate[3].x, brickTranslate[3].y, brickTranslate[3].x + 0.2f, brickTranslate[3].y + 0.2f);
+
 			}
 
-			mTranslate = glm::mat4(1.0f);
+			brickTranslate = glm::mat4(1.0f);
 			//set start of next line of blocks
-			mTranslate = glm::translate(mTranslate, glm::vec3(-0.77f, 0.8f - ((x + 1) / 11.0f), 0.0f));
+			brickTranslate = glm::translate(brickTranslate, glm::vec3(-0.77f, 0.8f - ((x + 1) / 11.0f), 0.0f));
 		}
 
 		//reset
@@ -518,9 +539,10 @@ int main(int argc, char *argv[]) {
 			ballTranslate = glm::translate(ballTranslate, glm::vec3(ballX, ballY, 0.0f));
 		}
 
-		if (checkCollision(ballTranslate[3].x, ballTranslate[3].y, ballTranslate[3].x + 0.5f, ballTranslate[3].y + 0.5f, paddleTranslate[3].x, paddleTranslate[3].y, paddleTranslate[3].x + 0.5f, paddleTranslate[3].y + 0.5f))
+		if (checkCollision(ballTranslate[3].x, ballTranslate[3].y, ballTranslate[3].x + 0.2f, ballTranslate[3].y + 0.05f, paddleTranslate[3].x, paddleTranslate[3].y, paddleTranslate[3].x + 0.2f, paddleTranslate[3].y + 0.05f))
 		{
-			SDL_Log("Collision Detected!!! WE HAVE LIFE");
+			ballDown = false;
+			//SDL_Log("Collision Detected!!!");
 		}
 
 		if (livesLeft == 0)
@@ -545,10 +567,18 @@ int main(int argc, char *argv[]) {
 ///////////////
 ///Collision///
 ///////////////
+
 bool checkCollision(float aX, float aY, float aW, float aH, float bX, float bY, float bW, float bH)
 {
-	if (aY + aH < bY) return false;
-	else if (aY > bY + bH) return false;
+	//std::cout << aX << std::endl;
+	if (aY < -0.95f && (aX > (-0.1 + bX) && aX < (bX + 0.1f)))
+	{
+		SDL_Log("Collision Detected");
+		return true;
+	}
+
+	if (aY < bY + bH) return false;
+	else if (aY + aH > bY) return false;
 	else if (aX + aW < bX) return false;
 	else if (aX > bX + bW) return false;
 

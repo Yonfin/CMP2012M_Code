@@ -1,42 +1,42 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\user\Desktop\CMP2012M_Code\src\main.cpp">
+    <ClCompile Include="C:\Users\user\Desktop\CGP2012M_Code\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Boundary.h">
+    <ClInclude Include="C:\Users\user\Desktop\CGP2012M_Code\src\Boundary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Circle.h">
+    <ClInclude Include="C:\Users\user\Desktop\CGP2012M_Code\src\Circle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Globals.h">
+    <ClInclude Include="C:\Users\user\Desktop\CGP2012M_Code\src\Globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\ShaderClass.h">
+    <ClInclude Include="C:\Users\user\Desktop\CGP2012M_Code\src\ShaderClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\Square.h">
+    <ClInclude Include="C:\Users\user\Desktop\CGP2012M_Code\src\Square.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\TextSquare.h">
+    <ClInclude Include="C:\Users\user\Desktop\CGP2012M_Code\src\TextSquare.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\user\Desktop\CMP2012M_Code\src\TextureClass.h">
+    <ClInclude Include="C:\Users\user\Desktop\CGP2012M_Code\src\TextureClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\user\Desktop\CMP2012M_Code\CMakeLists.txt" />
+    <CustomBuild Include="C:\Users\user\Desktop\CGP2012M_Code\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{CE63B294-853E-3982-9E29-B48CA2FBD5B7}</UniqueIdentifier>
+      <UniqueIdentifier>{4A1E93A3-C15B-3D97-AA44-FD8FF034E973}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{092E2E4B-0966-3836-9554-10D3B1B2355D}</UniqueIdentifier>
+      <UniqueIdentifier>{06246ECB-E4E3-34CB-88B0-DA9B64EC4A85}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
